@@ -1,7 +1,7 @@
 package com.example.geniemini.controller;
 
 import com.example.geniemini.model.Job;
-import com.example.geniemini.repository.JobRepository;
+import com.example.geniemini.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,24 +21,20 @@ import java.util.Optional;
 public class JobController {
 
     @Autowired
-    private JobRepository jobRepository;
+    private JobService jobService;
 
-    // Submit a new job
     @PostMapping("/submit")
     public Job submitJob(@RequestBody Job job) {
-        job.setStatus("Submitted");
-        return jobRepository.save(job); // Save and return the job
+        return jobService.submitJob(job);
     }
 
-    // Get a job by ID
     @GetMapping("/{id}")
     public Optional<Job> getJobById(@PathVariable Long id) {
-        return jobRepository.findById(id); // Retrieve and return the job if it exists
+        return jobService.getJobById(id);
     }
 
-    // Get all jobs
     @GetMapping("/")
     public List<Job> getAllJobs() {
-        return jobRepository.findAll(); // Retrieve and return all jobs
+        return jobService.getAllJobs();
     }
 }
