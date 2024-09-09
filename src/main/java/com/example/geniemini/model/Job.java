@@ -5,6 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+//Details - This is a simple Java class that represents the data structure for a job in our
+//          application. We'll store information like the job type (e.g., Spark job), input
+//          data, and the current status (e.g., Submitted, Running, Completed).
+//        - Think of it as a blueprint for what each job looks like in our system. It helps
+//          in organizing and storing job information consistently.
+
 @Entity // Marks this class as an entity, meaning it will be mapped to a database table
 public class Job {
 
