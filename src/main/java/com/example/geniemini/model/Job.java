@@ -1,9 +1,7 @@
 package com.example.geniemini.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 //Details - This is a simple Java class that represents the data structure for a job in our
 //          application. We'll store information like the job type (e.g., Spark job), input
@@ -21,6 +19,20 @@ public class Job {
     private String jobType; // To store the type of job (e.g., Spark, Hadoop)
     private String inputData; // To store input data information (e.g., data path)
     private String status; // To track the status of the job (e.g., Submitted, Running, Completed)
+
+    private LocalDateTime submittedAt;
+    private LocalDateTime startedAt;
+    private LocalDateTime completedAt;
+
+    // Constructors
+    public Job() {}
+
+    public Job(String jobType, String inputData, String status, LocalDateTime submittedAt) {
+        this.jobType = jobType;
+        this.inputData = inputData;
+        this.status = status;
+        this.submittedAt = submittedAt;
+    }
 
     // Getters and Setters (to access and modify private fields)
 
@@ -54,5 +66,29 @@ public class Job {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDateTime getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(LocalDateTime submittedAt) {
+        this.submittedAt = submittedAt;
+    }
+
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(LocalDateTime startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
     }
 }
