@@ -1,10 +1,6 @@
 package com.example.geniemini.service;
 
 import com.example.geniemini.model.Job;
-import com.example.geniemini.repository.JobRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,22 +11,9 @@ import java.util.Optional;
 //          that the controller should not handle.
 
 
-@Service
-public class JobService {
-
-    @Autowired
-    private JobRepository jobRepository;
-
-    public Job submitJob(Job job) {
-        job.setStatus("Submitted");
-        return jobRepository.save(job);
-    }
-
-    public Optional<Job> getJobById(Long id) {
-        return jobRepository.findById(id);
-    }
-
-    public List<Job> getAllJobs() {
-        return jobRepository.findAll();
-    }
+public interface JobService {
+    Job submitJob(Job job);
+    Optional<Job> getJobById(Long id);
+    List<Job> getAllJobs();
+    void updateJobStatus(Long id, String status);
 }

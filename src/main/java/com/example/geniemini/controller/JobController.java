@@ -17,24 +17,33 @@ import java.util.Optional;
 //          and directs them to the appropriate service methods.
 
 @RestController
-@RequestMapping("/jobs") // Base URL for all job-related endpoints
+@RequestMapping("/jobs")
 public class JobController {
 
     @Autowired
     private JobService jobService;
 
+    // Submit a new job
     @PostMapping("/submit")
     public Job submitJob(@RequestBody Job job) {
         return jobService.submitJob(job);
     }
 
+    // Get a job by ID
     @GetMapping("/{id}")
     public Optional<Job> getJobById(@PathVariable Long id) {
         return jobService.getJobById(id);
     }
 
+    // Get all jobs
     @GetMapping("/")
     public List<Job> getAllJobs() {
         return jobService.getAllJobs();
+    }
+
+    // Update job status (for internal use)
+    @PutMapping("/{id}/status")
+    public void updateJobStatus(@PathVariable Long id, @RequestParam String status) {
+        jobService.updateJobStatus(id, status);
     }
 }
