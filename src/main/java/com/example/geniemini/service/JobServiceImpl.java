@@ -2,6 +2,7 @@ package com.example.geniemini.service;
 
 import com.example.geniemini.model.Job;
 import com.example.geniemini.repository.JobRepository;
+import com.example.geniemini.util.CommandExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,36 @@ public class JobServiceImpl implements JobService {
     public Job submitJob(Job job) {
         job.setStatus("SUBMITTED");
         job.setSubmittedAt(LocalDateTime.now());
-        return jobRepository.save(job);
+        Job savedJob = jobRepository.save(job);
+
+        // Submit the job to Hadoop/Spark
+        new Thread(() -> executeJob(savedJob)).start();
+
+        return savedJob;
+    }
+
+    private void executeJob(Job job) {
+        try {
+            // Update job status to RUNNING
+            updateJobStatus(job.getId(), "RUNNING");
+
+            // Example Hadoop MapReduce job command
+            String hadoopCommand = String.format("hadoop jar %s/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar wordcount %s %s/output_%d",
+                    System.getenv("HADOOP_HOME"),
+                    job.getInputData(),
+                    System.getenv("HADOOP_HOME"),
+                    job.getId());
+
+            String output = CommandExecutor.executeCommand(hadoopCommand);
+            System.out.println("Hadoop Job Output: " + output);
+
+            // Update job status to COMPLETED
+            updateJobStatus(job.getId(), "COMPLETED");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Update job status to FAILED in case of exception
+            updateJobStatus(job.getId(), "FAILED");
+        }
     }
 
     @Override
